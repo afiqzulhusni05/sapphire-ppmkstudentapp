@@ -21,18 +21,28 @@ export interface JoinedClub {
     attending: boolean
   }
 
-  export interface Event {
+  export type Event = {
     id: string
     title: string
-    club:string
+    club: string        
     description: string
-    date:string
-    category: 'club' | 'ppmk' | 'academic'
+    category: string
     attendees: number
     image: string
     isJoined: boolean
     location: string
+    date: string
     time: string
+  }  
+
+  export interface Student {
+    name: string
+    password: string
+    batch: number
+    events: Event[]
+    chats: string[]
+    clubs:JoinedClub[]
   }
+  
 
   

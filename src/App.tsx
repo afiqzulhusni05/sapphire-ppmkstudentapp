@@ -6,11 +6,12 @@ import CommunicationHub from './components/CommunicationHub'
 import Marketplace from './components/Marketplace'
 import PPMKCentral from './components/PPMKCentral'
 import JoinedClubs from './components/JoinedClubs.tsx'
-import {Club,JoinedClub, Event} from './components/types.ts'
+import {Club,JoinedClub, Event,Student} from './components/types.ts'
 import Login from './components/login.tsx'
+import { students, updateStudent} from './components/ppmkdb.ts'
 
 function App() {
-  const [user, setUser] = useState<{ name: string } | null>(null)
+  const[currentUser, setCurrentUser]=useState<Student | null>(null)
   const [activeTab, setActiveTab] = useState('calendar')
   const [notifications, setNotifications] = useState(3)
   const tabs = [
@@ -54,19 +55,21 @@ function App() {
   ])
 
   const handleLogin = (name: string, password: string) => {
-    // ✅ Simple hardcoded check
-    if (password === '1234') {
-      setUser({ name })
+    const found = students.find(
+      s => s.name.toLowerCase() === name.toLowerCase() && s.password === password
+    )
+  
+    if (found) {
+      setCurrentUser({...found})
     } else {
-      alert('Wrong password!')
+      alert("Invalid credentials!")
     }
   }
-
-  if (!user) {
-    return <Login onLogin={handleLogin} />
+  if (!currentUser){
+    return <Login onLogin={handleLogin}/>
   }
   
-  console.log("✅ Logged in user:", user)
+  console.log("✅ Logged in user:", currentUser)
   
 /*
   const renderActiveComponent = () => {
@@ -89,47 +92,44 @@ function App() {
   
 //const [calendarEvents, setCalendarEvents] = useState<Event[]>([])
 const handleJoinEvent = (eventId:string)=>{
-  setEvents(prev=>
-    prev.map(e=>
-      e.id===eventId ? {...e,isJoined: !e.isJoined} : e
-    )
+  setCurrentUser(prev=>
+    prev ? {
+      ...prev,
+      events:prev.events.map(e=>
+        e.id===eventId ? {...e,isJoined: !e.isJoined} : e
+      )
+    }:null
   )
 }
 const handleVoteYes = (clubName: string) => {
-  setJoinedClubs(prev =>
-    prev.map(club =>
-      club.name === clubName ? { ...club, attending: true } : club
-    )
+  if (!currentUser) return
+
+  const updatedClubs = currentUser.clubs.map(club =>
+    club.name === clubName ? { ...club, attending: true } : club
   )
 
-  const club = joinedClubs.find(c => c.name === clubName)
-  if (club) {
-    setEvents(prev => {
-      const existing = prev.find(e => e.title === `${club.name} Meeting`)
-      if (existing){
-        return prev.map(e=>
-          e.id === existing.id ? {...e, attendees: e.attendees +1} : e
-        )
-      }
-
-      return[
-        ...prev,
-        {
-          id: `club-meeting-${club.name}`,
-          title: `${club.name} Meeting`,
-          description: `${club.name} scheduled meeting`,
-          category: 'club',
-          attendees: 0,
-          image: 'https://via.placeholder.com/400',
-          isJoined: true,
-          location: 'TBA',
-          date: club.nextMeeting,
-          time: '10.00', // we can reuse nextMeeting as "time/date" string
-          club:club.name,
-        }
-      ]
-    })
+  const newEvent:Event = {
+    id: `club-meeting-${clubName}`,
+    title: `${clubName} Meeting`,
+    description: `${clubName} scheduled meeting`,
+    category: 'club',
+    attendees: 1,
+    image: 'https://via.placeholder.com/400',
+    isJoined: true,
+    location: 'TBA',
+    date: currentUser.clubs.find(c => c.name === clubName)?.nextMeeting || '',
+    time: '10:00',
+    club: clubName,
   }
+
+  const updatedUser = {
+    ...currentUser,
+    clubs: updatedClubs,
+    events: [...currentUser.events, newEvent],
+  }
+
+  setCurrentUser(updatedUser)   // ✅ update local state
+  updateStudent(updatedUser)    // ✅ update "database"
 }
 
   return (
@@ -143,7 +143,7 @@ const handleVoteYes = (clubName: string) => {
                 <Home className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Welcome, {user.name} </h1>
+                <h1 className="text-xl font-bold text-gray-900">Welcome, {currentUser.name} (Batch{currentUser?.batch}) </h1>
                 <p className="text-sm text-gray-500">PPMK active members</p>
               </div>
             </div>
@@ -166,7 +166,10 @@ const handleVoteYes = (clubName: string) => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'calendar' && (
+          <>
           <EventCalendar events={events} onJoinEvent={handleJoinEvent}/>
+          <JoinedClubs clubs={joinedClubs} onVote={handleVoteYes} />
+          </>
         )}
         {activeTab === 'clubs' && (
           <ClubDirectory clubs={[]} />
@@ -174,7 +177,6 @@ const handleVoteYes = (clubName: string) => {
         {activeTab === 'chat' && <CommunicationHub />}
         {activeTab === 'marketplace' && <Marketplace />}
         {activeTab === 'central' && <PPMKCentral />}
-        <JoinedClubs clubs={joinedClubs} onVote={handleVoteYes} />
       </main>
 
       {/* Bottom Navigation */}
