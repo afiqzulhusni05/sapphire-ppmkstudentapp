@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Users, Search, Star, MapPin, Calendar, UserPlus, ExternalLink } from 'lucide-react'
-import {Club} from './components/types.ts'
+import {Club} from './types'
 
 /*
 interface Club {

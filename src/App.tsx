@@ -7,11 +7,12 @@ import Marketplace from './components/Marketplace'
 import PPMKCentral from './components/PPMKCentral'
 import JoinedClubs from './components/JoinedClubs.tsx'
 import {Club,JoinedClub, Event} from './components/types.ts'
+import Login from './components/login.tsx'
 
 function App() {
+  const [user, setUser] = useState<{ name: string } | null>(null)
   const [activeTab, setActiveTab] = useState('calendar')
   const [notifications, setNotifications] = useState(3)
-
   const tabs = [
     { id: 'calendar', label: 'Events', icon: Calendar, component: EventCalendar },
     { id: 'clubs', label: 'Clubs', icon: Users, component: ClubDirectory },
@@ -19,12 +20,10 @@ function App() {
     { id: 'marketplace', label: 'Shop', icon: ShoppingBag, component: Marketplace },
     { id: 'central', label: 'PPMK', icon: Home, component: PPMKCentral },
   ]
-
   const[joinedClubs, setJoinedClubs] = useState<JoinedClub[]>([
     {name:'MKBA', nextMeeting:'2025-08-20', attending:false},
     {name:'Recreation Club', nextMeeting: '2023-08-22', attending:false},
   ])
-
   const [events, setEvents] = useState<Event[]>([
     {
       id: '1',
@@ -53,6 +52,21 @@ function App() {
       time: '10:00',
     }
   ])
+
+  const handleLogin = (name: string, password: string) => {
+    // ✅ Simple hardcoded check
+    if (password === '1234') {
+      setUser({ name })
+    } else {
+      alert('Wrong password!')
+    }
+  }
+
+  if (!user) {
+    return <Login onLogin={handleLogin} />
+  }
+  
+  console.log("✅ Logged in user:", user)
   
 /*
   const renderActiveComponent = () => {
@@ -90,22 +104,31 @@ const handleVoteYes = (clubName: string) => {
 
   const club = joinedClubs.find(c => c.name === clubName)
   if (club) {
-    setEvents(prev => [
-      ...prev,
-      {
-        id: `club-meeting-${club.name}`,
-        title: `${club.name} Meeting`,
-        description: `${club.name} scheduled meeting`,
-        category: 'club',
-        attendees: 0,
-        image: 'https://via.placeholder.com/400',
-        isJoined: true,
-        location: 'TBA',
-        date: club.nextMeeting,
-        time: '10.00', // we can reuse nextMeeting as "time/date" string
-        club:club.name,
+    setEvents(prev => {
+      const existing = prev.find(e => e.title === `${club.name} Meeting`)
+      if (existing){
+        return prev.map(e=>
+          e.id === existing.id ? {...e, attendees: e.attendees +1} : e
+        )
       }
-    ])
+
+      return[
+        ...prev,
+        {
+          id: `club-meeting-${club.name}`,
+          title: `${club.name} Meeting`,
+          description: `${club.name} scheduled meeting`,
+          category: 'club',
+          attendees: 0,
+          image: 'https://via.placeholder.com/400',
+          isJoined: true,
+          location: 'TBA',
+          date: club.nextMeeting,
+          time: '10.00', // we can reuse nextMeeting as "time/date" string
+          club:club.name,
+        }
+      ]
+    })
   }
 }
 
@@ -120,8 +143,8 @@ const handleVoteYes = (clubName: string) => {
                 <Home className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">PPMK Student</h1>
-                <p className="text-sm text-gray-500">University Management</p>
+                <h1 className="text-xl font-bold text-gray-900">Welcome, {user.name} </h1>
+                <p className="text-sm text-gray-500">PPMK active members</p>
               </div>
             </div>
             
