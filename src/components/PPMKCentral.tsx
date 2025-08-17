@@ -37,37 +37,46 @@ const PPMKCentral = () => {
   const announcements: Announcement[] = [
     {
       id: '1',
-      title: 'New Semester Registration Opens',
-      content: 'Registration for the Spring 2024 semester will begin on January 15th. Please ensure all prerequisites are met and fees are paid before registration.',
+      title: 'Ongoing Event: HackPPMK25',
+      content: 'HackPPMK25 is ongoing, submission closes on August 23rd.',
       type: 'info',
-      date: '2024-01-10',
-      author: 'Academic Affairs',
+      date: '2025-08-17',
+      author: 'Academic and Career Bureau',
       isRead: false
     },
     {
       id: '2',
+      title: 'New Semester Begins',
+      content: 'Fall semester 2025 will begin on September 2nd. Please ensure all prerequisites are met and fees are paid before registration.',
+      type: 'info',
+      date: '2025-08-01',
+      author: 'Academic Affairs',
+      isRead: false
+    },
+    {
+      id: '3',
       title: 'Campus Maintenance Notice',
-      content: 'The main library will be closed for maintenance from January 20-22. Alternative study spaces will be available in the student center.',
+      content: 'The main library will be closed for maintenance from July 20-22. Alternative study spaces will be available in the student center.',
       type: 'warning',
-      date: '2024-01-08',
+      date: '2025-06-23',
       author: 'Facilities Management',
       isRead: true
     },
     {
-      id: '3',
+      id: '4',
       title: 'Scholarship Applications Now Open',
-      content: 'Merit-based scholarships for the next academic year are now accepting applications. Deadline is March 1st, 2024.',
+      content: 'Merit-based scholarships for the next academic year are now accepting applications. Deadline is September 1st, 2025.',
       type: 'success',
-      date: '2024-01-05',
+      date: '2025-06-25',
       author: 'Financial Aid Office',
       isRead: false
     },
     {
-      id: '4',
+      id: '5',
       title: 'Student Health Services Update',
       content: 'New mental health counseling services are now available. Schedule appointments through the student portal or visit the health center.',
       type: 'info',
-      date: '2024-01-03',
+      date: '2025-01-03',
       author: 'Student Health Services',
       isRead: true
     }
@@ -76,10 +85,10 @@ const PPMKCentral = () => {
   const documents: Document[] = [
     {
       id: '1',
-      name: 'Student Handbook 2024',
+      name: 'Student Handbook 2025',
       type: 'PDF',
       size: '2.4 MB',
-      uploadDate: '2024-01-01',
+      uploadDate: '2025-01-01',
       category: 'Guidelines'
     },
     {
@@ -87,15 +96,15 @@ const PPMKCentral = () => {
       name: 'Course Registration Form',
       type: 'PDF',
       size: '156 KB',
-      uploadDate: '2024-01-10',
+      uploadDate: '2025-01-10',
       category: 'Forms'
     },
     {
       id: '3',
-      name: 'Academic Calendar 2024',
+      name: 'Academic Calendar 2025',
       type: 'PDF',
       size: '890 KB',
-      uploadDate: '2024-01-01',
+      uploadDate: '2025-01-01',
       category: 'Academic'
     },
     {
@@ -103,7 +112,7 @@ const PPMKCentral = () => {
       name: 'Scholarship Application Guidelines',
       type: 'PDF',
       size: '1.2 MB',
-      uploadDate: '2024-01-05',
+      uploadDate: '2025-01-05',
       category: 'Financial Aid'
     },
     {
@@ -111,7 +120,7 @@ const PPMKCentral = () => {
       name: 'Campus Safety Protocols',
       type: 'PDF',
       size: '678 KB',
-      uploadDate: '2024-01-01',
+      uploadDate: '2025-01-01',
       category: 'Safety'
     }
   ]

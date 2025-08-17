@@ -171,7 +171,7 @@ const Marketplace = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Student Marketplace</h2>
+          <h2 className="text-2xl font-bold text-gray-900">PPMK Add2Cart</h2>
           <p className="text-gray-600">Shop merchandise, tickets, and support fundraisers</p>
         </div>
         
