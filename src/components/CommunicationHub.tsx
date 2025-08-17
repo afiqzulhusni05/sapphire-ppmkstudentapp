@@ -28,10 +28,10 @@ const CommunicationHub = () => {
   const chatRooms: ChatRoom[] = [
     {
       id: '1',
-      name: 'Computer Science 2024',
-      type: 'batch',
-      members: 45,
-      lastMessage: 'Anyone has notes for Algorithm class?',
+      name: 'Kodae Manse',
+      type: 'university',
+      members: 238,
+      lastMessage: 'AUTUMN 2025 TUITION FEE PAYMENT',
       lastMessageTime: '2 min ago',
       unreadCount: 3,
       avatar: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=100'
@@ -48,7 +48,7 @@ const CommunicationHub = () => {
     },
     {
       id: '3',
-      name: 'Photography Club',
+      name: 'MKBA',
       type: 'club',
       members: 78,
       lastMessage: 'Great shots from yesterday\'s event!',
@@ -58,9 +58,9 @@ const CommunicationHub = () => {
     },
     {
       id: '4',
-      name: 'Engineering 2023',
+      name: 'Batch 22',
       type: 'batch',
-      members: 67,
+      members: 140,
       lastMessage: 'Study group meeting at 3 PM',
       lastMessageTime: '5 hours ago',
       unreadCount: 2,
@@ -68,7 +68,7 @@ const CommunicationHub = () => {
     },
     {
       id: '5',
-      name: 'Cultural Society',
+      name: 'MSDC',
       type: 'club',
       members: 203,
       lastMessage: 'Rehearsal schedule updated',
@@ -110,7 +110,7 @@ const CommunicationHub = () => {
     {
       id: '5',
       sender: 'Lisa Wang',
-      content: 'Anyone has notes for Algorithm class? I missed yesterday\'s lecture.',
+      content: 'AUTUMN 2025 TUITION FEE PAYMENT. Invoice will be released tomorrow, please send it to me by tomorrow night.',
       timestamp: '10:45 AM',
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100'
     }

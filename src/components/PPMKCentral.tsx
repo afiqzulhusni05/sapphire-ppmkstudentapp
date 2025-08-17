@@ -46,11 +46,20 @@ const PPMKCentral = () => {
     },
     {
       id: '2',
+      title: 'Team MAD Recruitment CLOSED',
+      content: 'Application for Team MAD closed yesterday. Thank you to all aplicants.',
+      type: 'info',
+      date: '2025-08-16',
+      author: 'Communication and Special Task Bureau',
+      isRead: false
+    },
+    {
+      id: '3',
       title: 'New Semester Begins',
       content: 'Fall semester 2025 will begin on September 2nd. Please ensure all prerequisites are met and fees are paid before registration.',
       type: 'info',
       date: '2025-08-01',
-      author: 'Academic Affairs',
+      author: 'Academic and Career Bureau',
       isRead: false
     },
     {
@@ -85,7 +94,7 @@ const PPMKCentral = () => {
   const documents: Document[] = [
     {
       id: '1',
-      name: 'Student Handbook 2025',
+      name: 'Borang Kebenaran ke Luar Negara BKLN JPA',
       type: 'PDF',
       size: '2.4 MB',
       uploadDate: '2025-01-01',
@@ -93,7 +102,7 @@ const PPMKCentral = () => {
     },
     {
       id: '2',
-      name: 'Course Registration Form',
+      name: 'Borang Tuntutan',
       type: 'PDF',
       size: '156 KB',
       uploadDate: '2025-01-10',
@@ -101,7 +110,7 @@ const PPMKCentral = () => {
     },
     {
       id: '3',
-      name: 'Academic Calendar 2025',
+      name: 'Keahlian PPMK',
       type: 'PDF',
       size: '890 KB',
       uploadDate: '2025-01-01',
@@ -109,7 +118,7 @@ const PPMKCentral = () => {
     },
     {
       id: '4',
-      name: 'Scholarship Application Guidelines',
+      name: 'Perumahan',
       type: 'PDF',
       size: '1.2 MB',
       uploadDate: '2025-01-05',
@@ -117,9 +126,17 @@ const PPMKCentral = () => {
     },
     {
       id: '5',
-      name: 'Campus Safety Protocols',
+      name: 'Tabung Khas',
       type: 'PDF',
       size: '678 KB',
+      uploadDate: '2025-01-01',
+      category: 'Safety'
+    },
+    {
+      id: '6',
+      name: 'Keahlian PPMK',
+      type: 'PDF',
+      size: '500 KB',
       uploadDate: '2025-01-01',
       category: 'Safety'
     }
@@ -204,7 +221,7 @@ const PPMKCentral = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">PPMK Central</h2>
-          <p className="text-gray-600">Official announcements, documents, and university updates</p>
+          <p className="text-gray-600">Official announcements, documents, and association updates</p>
         </div>
         
         <div className="flex items-center space-x-2">

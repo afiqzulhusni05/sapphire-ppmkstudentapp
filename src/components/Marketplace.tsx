@@ -7,7 +7,7 @@ interface Product {
   description: string
   price: number
   image: string
-  category: 'merchandise' | 'tickets' | 'fundraiser'
+  category: 'preloved' | 'tickets' | 'fundraiser'
   seller: string
   rating: number
   reviews: number
@@ -29,20 +29,20 @@ const Marketplace = () => {
   const products: Product[] = [
     {
       id: '1',
-      name: 'PPMK University Hoodie',
-      description: 'Premium quality hoodie with university logo. Perfect for campus life and showing your school spirit.',
+      name: 'Uniqlo Hoodie',
+      description: 'Premium quality hoodie with logo in M size',
       price: 45.99,
       image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400',
-      category: 'merchandise',
-      seller: 'University Store',
+      category: 'preloved',
+      seller: 'yyyy',
       rating: 4.8,
-      reviews: 124,
-      inStock: 25,
+      reviews: 0,
+      inStock: 1,
       isLiked: false
     },
     {
       id: '2',
-      name: 'Tech Conference 2024 Ticket',
+      name: 'Tech Conference 2025 Ticket',
       description: 'Early bird ticket for the annual technology conference. Includes lunch and networking session.',
       price: 29.99,
       image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400',
@@ -94,20 +94,20 @@ const Marketplace = () => {
     },
     {
       id: '6',
-      name: 'University Water Bottle',
-      description: 'Stainless steel water bottle with university branding. Keeps drinks cold for 24 hours.',
-      price: 22.99,
+      name: 'Gaming PC',
+      description: 'Medium Tier Gaming PC used for only 1 month',
+      price: 200.00,
       image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400',
-      category: 'merchandise',
-      seller: 'University Store',
+      category: 'preloved',
+      seller: 'lee',
       rating: 4.4,
-      reviews: 78,
-      inStock: 40,
+      reviews: 0,
+      inStock: 1,
       isLiked: false
     }
   ]
 
-  const categories = ['all', 'merchandise', 'tickets', 'fundraiser']
+  const categories = ['all', 'preloved', 'tickets', 'fundraiser']
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -159,7 +159,7 @@ const Marketplace = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'merchandise': return 'bg-blue-100 text-blue-800'
+      case 'preloved': return 'bg-blue-100 text-blue-800'
       case 'tickets': return 'bg-purple-100 text-purple-800'
       case 'fundraiser': return 'bg-green-100 text-green-800'
       default: return 'bg-gray-100 text-gray-800'
@@ -172,7 +172,7 @@ const Marketplace = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">PPMK Add2Cart</h2>
-          <p className="text-gray-600">Shop merchandise, tickets, and support fundraisers</p>
+          <p className="text-gray-600">Shop preloved, tickets, and support fundraisers</p>
         </div>
         
         <div className="flex items-center space-x-4">
@@ -234,8 +234,8 @@ const Marketplace = () => {
               <ShoppingBag className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{products.filter(p => p.category === 'merchandise').length}</p>
-              <p className="text-gray-600">Merchandise</p>
+              <p className="text-2xl font-bold text-gray-900">{products.filter(p => p.category === 'preloved').length}</p>
+              <p className="text-gray-600">preloved</p>
             </div>
           </div>
         </div>
