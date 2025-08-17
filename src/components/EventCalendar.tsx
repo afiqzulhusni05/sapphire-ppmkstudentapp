@@ -1,27 +1,18 @@
 import React, { useState } from 'react'
 import { Calendar, Clock, MapPin, Users, Heart, X, Filter, ChevronLeft, ChevronRight } from 'lucide-react'
+import {Event} from './types'
 
-interface Event {
-  id: string
-  title: string
-  date: string
-  time: string
-  location: string
-  club: string
-  description: string
-  attendees: number
-  maxAttendees: number
-  image: string
-  category: 'club' | 'ppmk' | 'academic'
-  isJoined: boolean
+interface EventCalendarProps{
+  events:Event[]
+  onJoinEvent:(eventId: string)=>void
 }
 
-const EventCalendar = () => {
+const EventCalendar:React.FC<EventCalendarProps> = ({events,onJoinEvent}) => {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [filter, setFilter] = useState<'all' | 'club' | 'ppmk' | 'academic'>('all')
   const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar')
-
+/*
   const events: Event[] = [
     {
       id: '1',
@@ -94,14 +85,15 @@ const EventCalendar = () => {
       isJoined: false
     }
   ]
+  */
 
   const filteredEvents = events.filter(event => filter === 'all' || event.category === filter)
-
+/*
   const handleJoinEvent = (eventId: string) => {
     // In a real app, this would make an API call
     console.log(`Joining event ${eventId}`)
   }
-
+*/
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
   }
@@ -287,13 +279,13 @@ const EventCalendar = () => {
                         </div>
                         <div className="flex items-center space-x-1">
                           <Users className="w-4 h-4" />
-                          <span>{event.attendees}/{event.maxAttendees}</span>
+                          <span>{event.attendees}</span>
                         </div>
                       </div>
                     </div>
                     
                     <button
-                      onClick={() => handleJoinEvent(event.id)}
+                      onClick={() => onJoinEvent(event.id)}
                       className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                         event.isJoined
                           ? 'bg-green-100 text-green-800 hover:bg-green-200'
@@ -357,13 +349,13 @@ const EventCalendar = () => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Users className="w-5 h-5 text-gray-400" />
-                  <span className="text-gray-700">{selectedEvent.attendees}/{selectedEvent.maxAttendees} attendees</span>
+                  <span className="text-gray-700">{selectedEvent.attendees} attendees</span>
                 </div>
               </div>
               
               <div className="flex space-x-3">
                 <button
-                  onClick={() => handleJoinEvent(selectedEvent.id)}
+                  onClick={() => onJoinEvent(selectedEvent.id)}
                   className={`flex-1 py-3 rounded-lg font-medium transition-colors ${
                     selectedEvent.isJoined
                       ? 'bg-green-100 text-green-800 hover:bg-green-200'

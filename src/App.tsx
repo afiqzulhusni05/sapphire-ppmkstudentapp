@@ -6,6 +6,7 @@ import CommunicationHub from './components/CommunicationHub'
 import Marketplace from './components/Marketplace'
 import PPMKCentral from './components/PPMKCentral'
 import JoinedClubs from './components/JoinedClubs.tsx'
+import {Club,JoinedClub, Event} from './components/types.ts'
 
 function App() {
   const [activeTab, setActiveTab] = useState('calendar')
@@ -19,28 +20,94 @@ function App() {
     { id: 'central', label: 'PPMK', icon: Home, component: PPMKCentral },
   ]
 
-  const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || EventCalendar
-  const[joinedClubs, setJoinedClubs] = useState([
+  const[joinedClubs, setJoinedClubs] = useState<JoinedClub[]>([
     {name:'MKBA', nextMeeting:'2025-08-20', attending:false},
     {name:'Recreation Club', nextMeeting: '2023-08-22', attending:false},
   ])
-  const [calendarEvents, setCalendarEvents] = useState<
-    {title: String; date:string}[]
-  >([])
-  const handleVoteYes = (clubName: string) => {
-    setJoinedClubs(prev =>
-      prev.map(club =>
-        club.name === clubName ? { ...club, attending: true } : club
-      )
-    )
-    const club = joinedClubs.find(c => c.name === clubName)
-    if (club) {
-      setCalendarEvents(prev => [
-        ...prev,
-        { title: `${club.name} Meeting`, date: club.nextMeeting }
-      ])
+
+  const [events, setEvents] = useState<Event[]>([
+    {
+      id: '1',
+      title: 'MKBA',
+      club:'MKBA',
+      description: 'MKBA is a student-led organization focused on badminton.',
+      category: 'club',
+      attendees: 120,
+      image: 'https://via.placeholder.com/400',
+      isJoined: joinedClubs.some(jc => jc.name === 'MKBA'),
+      location: 'Business Block, Room 101',
+      date:'2025-08-20',
+      time:'17:00',
+    },
+    {
+      id: '2',
+      title: 'Kasuma Spring',
+      club:'PPMK',
+      description: 'A fun and inclusive club for sports, games, and outdoor activities.',
+      category: 'ppmk',
+      attendees: 80,
+      image: 'https://via.placeholder.com/400',
+      isJoined: joinedClubs.some(jc => jc.name === 'Recreation Club'),
+      location: 'Sports Complex',
+      date:'2025-08-22',
+      time: '10:00',
+    }
+  ])
+  
+/*
+  const renderActiveComponent = () => {
+    switch (activeTab) {
+      case 'calendar':
+        return <EventCalendar events={calendarEvents} />
+      case 'clubs':
+        return <ClubDirectory clubs={clubs} />
+      case 'chat':
+        return <CommunicationHub />
+      case 'marketplace':
+        return <Marketplace />
+      case 'central':
+        return <PPMKCentral />
+      default:
+        return <EventCalendar events={calendarEvents} />
     }
   }
+*/
+  
+//const [calendarEvents, setCalendarEvents] = useState<Event[]>([])
+const handleJoinEvent = (eventId:string)=>{
+  setEvents(prev=>
+    prev.map(e=>
+      e.id===eventId ? {...e,isJoined: !e.isJoined} : e
+    )
+  )
+}
+const handleVoteYes = (clubName: string) => {
+  setJoinedClubs(prev =>
+    prev.map(club =>
+      club.name === clubName ? { ...club, attending: true } : club
+    )
+  )
+
+  const club = joinedClubs.find(c => c.name === clubName)
+  if (club) {
+    setEvents(prev => [
+      ...prev,
+      {
+        id: `club-meeting-${club.name}`,
+        title: `${club.name} Meeting`,
+        description: `${club.name} scheduled meeting`,
+        category: 'club',
+        attendees: 0,
+        image: 'https://via.placeholder.com/400',
+        isJoined: true,
+        location: 'TBA',
+        date: club.nextMeeting,
+        time: '10.00', // we can reuse nextMeeting as "time/date" string
+        club:club.name,
+      }
+    ])
+  }
+}
 
   return (
   <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -75,7 +142,15 @@ function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <ActiveComponent />
+        {activeTab === 'calendar' && (
+          <EventCalendar events={events} onJoinEvent={handleJoinEvent}/>
+        )}
+        {activeTab === 'clubs' && (
+          <ClubDirectory clubs={[]} />
+        )}
+        {activeTab === 'chat' && <CommunicationHub />}
+        {activeTab === 'marketplace' && <Marketplace />}
+        {activeTab === 'central' && <PPMKCentral />}
         <JoinedClubs clubs={joinedClubs} onVote={handleVoteYes} />
       </main>
 

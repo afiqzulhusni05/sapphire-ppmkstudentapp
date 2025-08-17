@@ -1,5 +1,5 @@
 import React from 'react'
-import {JoinedClub} from './components/types.ts'
+import {JoinedClub} from './types'
 
 /*
 interface Club {
