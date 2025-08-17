@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Users, Search, Star, MapPin, Calendar, UserPlus, ExternalLink } from 'lucide-react'
+import {Club} from './components/types.ts'
 
+/*
 interface Club {
   id: string
   name: string
@@ -16,13 +18,18 @@ interface Club {
   president: string
   contact: string
 }
+*/
 
-const ClubDirectory = () => {
+interface Props{
+  clubs:Club[]
+}
+
+const ClubDirectory: React.FC<Props> = ({clubs}) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedClub, setSelectedClub] = useState<Club | null>(null)
 
-  const clubs: Club[] = [
+  /*const clubs: Club[] = [
     {
       id: '1',
       name: 'Computer Science Club',
@@ -113,7 +120,7 @@ const ClubDirectory = () => {
       president: 'Lisa Wang',
       contact: 'debate@university.edu'
     }
-  ]
+]*/
 
   const categories = ['all', ...Array.from(new Set(clubs.map(club => club.category)))]
 

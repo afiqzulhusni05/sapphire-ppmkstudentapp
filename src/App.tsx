@@ -5,6 +5,7 @@ import ClubDirectory from './components/ClubDirectory'
 import CommunicationHub from './components/CommunicationHub'
 import Marketplace from './components/Marketplace'
 import PPMKCentral from './components/PPMKCentral'
+import JoinedClubs from './components/JoinedClubs.tsx'
 
 function App() {
   const [activeTab, setActiveTab] = useState('calendar')
@@ -19,9 +20,30 @@ function App() {
   ]
 
   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || EventCalendar
+  const[joinedClubs, setJoinedClubs] = useState([
+    {name:'MKBA', nextMeeting:'2025-08-20', attending:false},
+    {name:'Recreation Club', nextMeeting: '2023-08-22', attending:false},
+  ])
+  const [calendarEvents, setCalendarEvents] = useState<
+    {title: String; date:string}[]
+  >([])
+  const handleVoteYes = (clubName: string) => {
+    setJoinedClubs(prev =>
+      prev.map(club =>
+        club.name === clubName ? { ...club, attending: true } : club
+      )
+    )
+    const club = joinedClubs.find(c => c.name === clubName)
+    if (club) {
+      setCalendarEvents(prev => [
+        ...prev,
+        { title: `${club.name} Meeting`, date: club.nextMeeting }
+      ])
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+  <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
       <header className="bg-white shadow-lg border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,6 +76,7 @@ function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <ActiveComponent />
+        <JoinedClubs clubs={joinedClubs} onVote={handleVoteYes} />
       </main>
 
       {/* Bottom Navigation */}
