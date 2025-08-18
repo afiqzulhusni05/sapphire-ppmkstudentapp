@@ -172,7 +172,24 @@ const handleVoteYes = (clubName: string) => {
           </>
         )}
         {activeTab === 'clubs' && (
-          <ClubDirectory clubs={[currentUser.clubs]} />
+          <ClubDirectory 
+            allclubs={events.map(event => ({
+              id: event.id,
+              name: event.title,
+              description: event.description,
+              category: event.category,
+              members: event.attendees,
+              image: event.image,
+              location: event.location,
+              meetingTime: `${event.date} ${event.time}`,
+              isJoined: joinedClubs.some(jc => jc.name === event.club),
+              rating: 0, // Default rating value
+              president: 'TBA', // Placeholder
+              contact: 'TBA', // Placeholder
+              activities: ['Activity 1', 'Activity 2'], // Placeholder
+            }))}
+            joinedClubs={joinedClubs}
+          />
         )}
         {activeTab === 'chat' && <CommunicationHub />}
         {activeTab === 'marketplace' && <Marketplace />}

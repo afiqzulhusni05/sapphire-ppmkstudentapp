@@ -1,152 +1,41 @@
 import React, { useState } from 'react'
 import { Users, Search, Star, MapPin, Calendar, UserPlus, ExternalLink } from 'lucide-react'
-import {Club, JoinedClub} from './types'
+import { Club, JoinedClub } from './types'
 
-/*
-interface Club {
-  id: string
-  name: string
-  description: string
-  category: string
-  members: number
-  image: string
-  isJoined: boolean
-  rating: number
-  location: string
-  meetingTime: string
-  activities: string[]
-  president: string
-  contact: string
-}
-*/
-
-interface Props{
-  allclubs:Club[];
+interface Props {
+  allclubs: Club[];
   joinedClubs: JoinedClub[];
 }
 
-const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
-  const [filter, setFilter] = useState<"active"|"joined"|"categories"|"all">("all");
-  const joinedClubNames = new Set(joinedClubs.map(c=>c.name));
-  /*
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  const [selectedClub, setSelectedClub] = useState<Club | null>(null)
-  */
-  /*const clubs: Club[] = [
-    {
-      id: '1',
-      name: 'Computer Science Club',
-      description: 'Explore the world of technology, programming, and innovation. Join us for coding competitions, tech talks, and hackathons.',
-      category: 'Technology',
-      members: 156,
-      image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400',
-      isJoined: true,
-      rating: 4.8,
-      location: 'Engineering Building, Room 201',
-      meetingTime: 'Fridays, 3:00 PM',
-      activities: ['Coding Competitions', 'Tech Talks', 'Hackathons', 'Project Collaborations'],
-      president: 'Sarah Chen',
-      contact: 'cs.club@university.edu'
-    },
-    {
-      id: '2',
-      name: 'Cultural Society',
-      description: 'Celebrate diversity through music, dance, and cultural events. Experience traditions from around the world.',
-      category: 'Arts & Culture',
-      members: 203,
-      image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400',
-      isJoined: false,
-      rating: 4.6,
-      location: 'Student Center, Hall B',
-      meetingTime: 'Wednesdays, 6:00 PM',
-      activities: ['Cultural Performances', 'International Food Festival', 'Language Exchange', 'Art Exhibitions'],
-      president: 'Raj Patel',
-      contact: 'cultural@university.edu'
-    },
-    {
-      id: '3',
-      name: 'Entrepreneurship Club',
-      description: 'Turn your ideas into reality. Network with like-minded individuals and learn from successful entrepreneurs.',
-      category: 'Business',
-      members: 89,
-      image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400',
-      isJoined: false,
-      rating: 4.7,
-      location: 'Business Center, Room 305',
-      meetingTime: 'Tuesdays, 4:30 PM',
-      activities: ['Startup Pitches', 'Mentorship Programs', 'Business Plan Competitions', 'Networking Events'],
-      president: 'Michael Johnson',
-      contact: 'entrepreneur@university.edu'
-    },
-    {
-      id: '4',
-      name: 'Environmental Action Group',
-      description: 'Make a positive impact on our planet. Join sustainability initiatives and environmental awareness campaigns.',
-      category: 'Environment',
-      members: 134,
-      image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400',
-      isJoined: true,
-      rating: 4.9,
-      location: 'Science Building, Room 102',
-      meetingTime: 'Thursdays, 5:00 PM',
-      activities: ['Campus Clean-up', 'Recycling Drives', 'Sustainability Workshops', 'Tree Planting'],
-      president: 'Emma Rodriguez',
-      contact: 'environment@university.edu'
-    },
-    {
-      id: '5',
-      name: 'Photography Club',
-      description: 'Capture moments and express creativity through the lens. Learn techniques and showcase your work.',
-      category: 'Arts & Culture',
-      members: 78,
-      image: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400',
-      isJoined: false,
-      rating: 4.5,
-      location: 'Art Building, Studio 3',
-      meetingTime: 'Saturdays, 2:00 PM',
-      activities: ['Photo Walks', 'Workshops', 'Exhibitions', 'Photo Contests'],
-      president: 'David Kim',
-      contact: 'photo@university.edu'
-    },
-    {
-      id: '6',
-      name: 'Debate Society',
-      description: 'Sharpen your public speaking and critical thinking skills through structured debates and discussions.',
-      category: 'Academic',
-      members: 67,
-      image: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=400',
-      isJoined: false,
-      rating: 4.4,
-      location: 'Liberal Arts Building, Room 205',
-      meetingTime: 'Mondays, 7:00 PM',
-      activities: ['Weekly Debates', 'Public Speaking Workshops', 'Inter-university Competitions', 'Mock Trials'],
-      president: 'Lisa Wang',
-      contact: 'debate@university.edu'
-    }
-]*/
+const ClubDirectory: React.FC<Props> = ({ allclubs, joinedClubs }) => {
+  const [filter, setFilter] = useState<"active" | "joined" | "categories" | "all">("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedClub, setSelectedClub] = useState<Club | null>(null);
+
+  const joinedClubNames = new Set(joinedClubs.map(c => c.name));
+  const categories = ['all', ...Array.from(new Set(allclubs.map(club => club.category)))];
+
   let filteredClubs: Club[] = allclubs;
 
-  if(filter == "active"){
-    filteredClubs = allclubs.filter(c=>c.members>50);
-  }else if(filter === "joined"){
-    filteredClubs = allclubs.filter(c=>joinedClubNames.has(c.name));
-  }else if(filter === "categories"){
+  if (filter === "active") {
+    filteredClubs = allclubs.filter(c => c.members > 50);
+  } else if (filter === "joined") {
+    filteredClubs = allclubs.filter(c => joinedClubNames.has(c.name));
+  } else if (filter === "categories") {
     filteredClubs = allclubs;
   }
-  /*
-  const categories = ['all', ...Array.from(new Set(clubs.map(club => club.category)))]
 
-  const filteredClubs = clubs.filter(club => {
+  filteredClubs = filteredClubs.filter(club => {
     const matchesSearch = club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         club.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = selectedCategory === 'all' || club.category === selectedCategory
-    return matchesSearch && matchesCategory
-  })
-  */
+      club.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || club.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
   const handleJoinClub = (clubId: string) => {
-    console.log(`Joining club ${clubId}`)
-  }
+    console.log(`Joining club ${clubId}`);
+  };
 
   return (
     <div className="space-y-6">
@@ -156,7 +45,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
           <h2 className="text-2xl font-bold text-gray-900">Club Directory</h2>
           <p className="text-gray-600">Discover and join student organizations</p>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -168,7 +57,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
             />
           </div>
-          
+
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
@@ -196,7 +85,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-xl shadow-lg p-6">
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -208,7 +97,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-xl shadow-lg p-6">
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -245,7 +134,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
                 </div>
               )}
             </div>
-            
+
             <div className="p-6">
               <div className="flex items-start justify-between mb-3">
                 <h3 className="text-lg font-semibold text-gray-900">{club.name}</h3>
@@ -254,9 +143,9 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
                   <span className="text-sm text-gray-600">{club.rating}</span>
                 </div>
               </div>
-              
+
               <p className="text-gray-600 text-sm mb-4 line-clamp-3">{club.description}</p>
-              
+
               <div className="space-y-2 mb-4">
                 <div className="flex items-center space-x-2 text-sm text-gray-500">
                   <Users className="w-4 h-4" />
@@ -271,7 +160,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
                   <span>{club.meetingTime}</span>
                 </div>
               </div>
-              
+
               <div className="flex space-x-2">
                 <button
                   onClick={() => handleJoinClub(club.id)}
@@ -312,7 +201,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
                 ×
               </button>
             </div>
-            
+
             <div className="p-6">
               <div className="flex items-start justify-between mb-4">
                 <div>
@@ -328,9 +217,9 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
                   </div>
                 </div>
               </div>
-              
+
               <p className="text-gray-600 mb-6">{selectedClub.description}</p>
-              
+
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Club Details</h4>
@@ -349,7 +238,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Leadership</h4>
                   <div className="space-y-2 text-sm text-gray-600">
@@ -358,7 +247,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="mb-6">
                 <h4 className="font-semibold text-gray-900 mb-3">Activities</h4>
                 <div className="flex flex-wrap gap-2">
@@ -372,7 +261,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
                   ))}
                 </div>
               </div>
-              
+
               <button
                 onClick={() => handleJoinClub(selectedClub.id)}
                 className={`w-full py-3 rounded-lg font-medium transition-colors ${
@@ -388,7 +277,7 @@ const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ClubDirectory
+export default ClubDirectory;
