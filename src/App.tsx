@@ -172,7 +172,7 @@ const handleVoteYes = (clubName: string) => {
           </>
         )}
         {activeTab === 'clubs' && (
-          <ClubDirectory clubs={[]} />
+          <ClubDirectory clubs={[currentUser.clubs]} />
         )}
         {activeTab === 'chat' && <CommunicationHub />}
         {activeTab === 'marketplace' && <Marketplace />}

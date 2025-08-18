@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Users, Search, Star, MapPin, Calendar, UserPlus, ExternalLink } from 'lucide-react'
-import {Club} from './types'
+import {Club, JoinedClub} from './types'
 
 /*
 interface Club {
@@ -21,14 +21,18 @@ interface Club {
 */
 
 interface Props{
-  clubs:Club[]
+  allclubs:Club[];
+  joinedClubs: JoinedClub[];
 }
 
-const ClubDirectory: React.FC<Props> = ({clubs}) => {
+const ClubDirectory: React.FC<Props> = ({allclubs, joinedClubs}) => {
+  const [filter, setFilter] = useState<"active"|"joined"|"categories"|"all">("all");
+  const joinedClubNames = new Set(joinedClubs.map(c=>c.name));
+  /*
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedClub, setSelectedClub] = useState<Club | null>(null)
-
+  */
   /*const clubs: Club[] = [
     {
       id: '1',
@@ -121,7 +125,16 @@ const ClubDirectory: React.FC<Props> = ({clubs}) => {
       contact: 'debate@university.edu'
     }
 ]*/
+  let filteredClubs: Club[] = allclubs;
 
+  if(filter == "active"){
+    filteredClubs = allclubs.filter(c=>c.members>50);
+  }else if(filter === "joined"){
+    filteredClubs = allclubs.filter(c=>joinedClubNames.has(c.name));
+  }else if(filter === "categories"){
+    filteredClubs = allclubs;
+  }
+  /*
   const categories = ['all', ...Array.from(new Set(clubs.map(club => club.category)))]
 
   const filteredClubs = clubs.filter(club => {
@@ -130,7 +143,7 @@ const ClubDirectory: React.FC<Props> = ({clubs}) => {
     const matchesCategory = selectedCategory === 'all' || club.category === selectedCategory
     return matchesSearch && matchesCategory
   })
-
+  */
   const handleJoinClub = (clubId: string) => {
     console.log(`Joining club ${clubId}`)
   }
@@ -178,7 +191,7 @@ const ClubDirectory: React.FC<Props> = ({clubs}) => {
               <Users className="w-6 h-6 text-blue-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{clubs.length}</p>
+              <p className="text-2xl font-bold text-gray-900">{allclubs.length}</p>
               <p className="text-gray-600">Active Clubs</p>
             </div>
           </div>
@@ -190,7 +203,7 @@ const ClubDirectory: React.FC<Props> = ({clubs}) => {
               <UserPlus className="w-6 h-6 text-green-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{clubs.filter(c => c.isJoined).length}</p>
+              <p className="text-2xl font-bold text-gray-900">{joinedClubs.length}</p>
               <p className="text-gray-600">Joined Clubs</p>
             </div>
           </div>

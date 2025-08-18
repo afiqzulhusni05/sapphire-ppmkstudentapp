@@ -1,6 +1,57 @@
 // src/data/studentsDB.ts
-import { Student } from "../components/types"
+import { Student, Club } from "../components/types"
 
+
+export const ppmkClubs: Club[] = [
+    {
+        {
+            id: "club1",
+            name: "MKBA",
+            description: "A student-led organization focused on badminton and teamwork.",
+            category: "Sports",
+            rating: 4.7,
+            members: 120,
+            location: "Business Block, Room 101",
+            meetingTime: "Every Wednesday, 5:00 PM",
+            image: "https://via.placeholder.com/400",
+            president: "Amir",
+            contact: "amir@example.com",
+            activities: ["Weekly matches", "Training sessions", "Inter-varsity tournaments"],
+            isJoined: false, // will be overridden by student data
+          },
+          {
+            id: "club1",
+            name: "MKBA",
+            description: "A student-led organization focused on badminton and teamwork.",
+            category: "Sports",
+            rating: 4.7,
+            members: 120,
+            location: "Business Block, Room 101",
+            meetingTime: "Every Wednesday, 5:00 PM",
+            image: "https://via.placeholder.com/400",
+            president: "Amir",
+            contact: "amir@example.com",
+            activities: ["Weekly matches", "Training sessions", "Inter-varsity tournaments"],
+            isJoined: false, // will be overridden by student data
+          },
+          {
+            id: "club1",
+            name: "MKBA",
+            description: "A student-led organization focused on badminton and teamwork.",
+            category: "Sports",
+            rating: 4.7,
+            members: 120,
+            location: "Business Block, Room 101",
+            meetingTime: "Every Wednesday, 5:00 PM",
+            image: "https://via.placeholder.com/400",
+            president: "Amir",
+            contact: "amir@example.com",
+            activities: ["Weekly matches", "Training sessions", "Inter-varsity tournaments"],
+            isJoined: false, // will be overridden by student data
+          },
+        
+    }
+]
 export let students: Student[] = [
   {
     name: "Sarah",
