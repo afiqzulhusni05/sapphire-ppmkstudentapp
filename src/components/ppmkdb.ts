@@ -1,4 +1,4 @@
-import { Student, Club } from "../components/types";
+import { Student, Club, Message} from "../components/types";
 
 export const ppmkAnnouncements = [{
   id:"ppmk1",
@@ -82,7 +82,10 @@ export let students: Student[] = [
         time: "17:00",
       },
     ],
-    chats: ["Hey guys, practice tomorrow at 5pm!"],
+    chats: [],
+    message:[
+      {id:"s1", sender:"Sarah",content:"Hi bila free?", timestamp:"2025-08-15T10:00:00Z"}
+    ],
     clubs: [{ name: "MKBA", nextMeeting: "2025-08-20", attending: false }],
   },
   {
@@ -104,7 +107,10 @@ export let students: Student[] = [
         time: "10:00",
       },
     ],
-    chats: ["Reminder: bring your notes"],
+    chats: [],
+    message:[
+      {id:"s2", sender:"Teya",content:"esok petang free je", timestamp:"2025-08-15T10:00:00Z"}
+    ],
     clubs: [{ name: "Recreation Club", nextMeeting: "2025-08-22", attending: false }],
   },
   {
@@ -113,6 +119,9 @@ export let students: Student[] = [
     batch: 22,
     events: [],
     chats: [],
+    message:[
+      {id:"s3", sender:"Husni",content:"tak free do sorry", timestamp:"2025-08-15T10:00:00Z"}
+    ],
     clubs: [],
   },
   {
@@ -121,6 +130,9 @@ export let students: Student[] = [
     batch: 22,
     events: [],
     chats: [],
+    message:[
+      {id:"s4", sender:"Irdina",content:"saya always free", timestamp:"2025-08-15T10:00:00Z"}
+    ],
     clubs: [],
   },
 ];

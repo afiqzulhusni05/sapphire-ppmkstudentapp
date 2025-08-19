@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { updateStudent } from './ppmkdb'
 import { MessageCircle, Send, Users, Hash, Plus, Search, Phone, Video, MoreVertical } from 'lucide-react'
 
 interface ChatRoom {
@@ -12,7 +13,7 @@ interface ChatRoom {
   avatar: string
 }
 
-interface Message {
+export interface Message {
   id: string
   sender: string
   content: string
@@ -78,51 +79,35 @@ const CommunicationHub = () => {
     }
   ]
 
-  const messages: Message[] = [
-    {
-      id: '1',
-      sender: 'Sarah Chen',
-      content: 'Hey everyone! Hope you\'re all doing well. Just wanted to share some resources for our upcoming project.',
-      timestamp: '10:30 AM',
-      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100'
-    },
-    {
-      id: '2',
-      sender: 'Mike Johnson',
-      content: 'Thanks Sarah! That would be really helpful.',
-      timestamp: '10:32 AM',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100'
-    },
-    {
-      id: '3',
-      sender: 'Emma Rodriguez',
-      content: 'I found some great documentation on the latest frameworks. Should I share the links?',
-      timestamp: '10:35 AM',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100'
-    },
-    {
-      id: '4',
-      sender: 'David Kim',
-      content: 'Yes please! Also, don\'t forget about the study session tomorrow at 2 PM in the library.',
-      timestamp: '10:38 AM',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100'
-    },
-    {
-      id: '5',
-      sender: 'Lisa Wang',
-      content: 'AUTUMN 2025 TUITION FEE PAYMENT. Invoice will be released tomorrow, please send it to me by tomorrow night.',
-      timestamp: '10:45 AM',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100'
-    }
-  ]
+  const [roomMessages, setRoomMessages] = useState<Record<string, Message[]>>({
+    '1':[],
+    '2':[],
+    '3':[],
+    '4':[],
+    '5':[],
+  })
 
+  const messages = roomMessages[selectedRoom] || []
+    
   const selectedRoomData = chatRooms.find(room => room.id === selectedRoom)
   const filteredRooms = chatRooms.filter(room =>
     room.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const handleSendMessage = () => {
-    if (newMessage.trim()) {
+    if (newMessage.trim() && selectedRoom){
+      const newMsg : Message = {
+        id:Date.now().toString(),
+        sender:"You",
+        content:newMessage,
+        timestamp:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),
+        avatar:"https://via.placeholder.com/40",
+      }
+
+      setRoomMessages(prev=>({
+        ...prev,
+        [selectedRoom]:[...(prev[selectedRoom]||[]), newMsg]
+      }))
       console.log('Sending message:', newMessage)
       setNewMessage('')
     }
@@ -136,6 +121,7 @@ const CommunicationHub = () => {
       default: return 'bg-gray-100 text-gray-800'
     }
   }
+  
 
   const getRoomTypeIcon = (type: string) => {
     switch (type) {
