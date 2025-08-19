@@ -97,7 +97,7 @@ const Marketplace = () => {
       name: 'Gaming PC',
       description: 'Medium Tier Gaming PC used for only 1 month',
       price: 200.00,
-      image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400',
+      image: 'https://images.unsplash.com/photo-1587302912306-cf1ed9c33146?q=80&w=1960&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       category: 'preloved',
       seller: 'lee',
       rating: 4.4,
