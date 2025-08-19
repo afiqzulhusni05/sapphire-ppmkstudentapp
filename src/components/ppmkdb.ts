@@ -1,5 +1,19 @@
 import { Student, Club } from "../components/types";
 
+export const ppmkAnnouncements = [{
+  id:"ppmk1",
+  title:"Kasuma Spring Event",
+  message:"Dont miss Kasuma Spring this weekend!",
+  date:"2023-08-15",
+},
+{
+  id:"ppmk1",
+  title:"Kasuma Spring Event",
+  message:"Dont miss Kasuma Spring this weekend!",
+  date:"2023-08-15",
+}
+]
+
 export const ppmkClubs: Club[] = [
   {
     id: "club1",
@@ -113,4 +127,18 @@ export let students: Student[] = [
 
 export function updateStudent(updated: Student) {
   students = students.map((s) => (s.name === updated.name ? updated : s));
+}
+
+export function getUserNotifications(currentUser: Student | null) {
+  return [
+    ...ppmkAnnouncements,
+    ...(currentUser?.clubs.map(club => ({
+      id: `notif-${club.name}`,
+      title: `${club.name} Meeting`,
+      message: `Upcoming meeting on ${club.nextMeeting}`,
+      date: club.nextMeeting,
+    })) || []),
+  ].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
 }

@@ -8,12 +8,12 @@ import PPMKCentral from './components/PPMKCentral'
 import JoinedClubs from './components/JoinedClubs.tsx'
 import {Club,JoinedClub, Event,Student} from './components/types.ts'
 import Login from './components/login.tsx'
-import { students, updateStudent} from './components/ppmkdb.ts'
+import { getUserNotifications, ppmkAnnouncements, students, updateStudent} from './components/ppmkdb.ts'
 
 function App() {
   const[currentUser, setCurrentUser]=useState<Student | null>(null)
   const [activeTab, setActiveTab] = useState('calendar')
-  const [notifications, setNotifications] = useState(3)
+  const [showNotifications, setShowNotifications] = useState<boolean>(false)
   const tabs = [
     { id: 'calendar', label: 'Events', icon: Calendar, component: EventCalendar },
     { id: 'clubs', label: 'Clubs', icon: Users, component: ClubDirectory },
@@ -91,11 +91,6 @@ function App() {
       alert("Invalid credentials!")
     }
   }
-  if (!currentUser){
-    return <Login onLogin={handleLogin}/>
-  }
-  
-  console.log("✅ Logged in user:", currentUser)
   
 /*
   const renderActiveComponent = () => {
@@ -117,77 +112,119 @@ function App() {
 */
   
 //const [calendarEvents, setCalendarEvents] = useState<Event[]>([])
-const handleJoinEvent = (eventId:string)=>{
-  setCurrentUser(prev=>
-    prev ? {
-      ...prev,
-      events:prev.events.map(e=>
-        e.id===eventId ? {...e,isJoined: !e.isJoined} : e
-      )
-    }:null
-  )
-}
-const handleVoteYes = (clubName: string) => {
-  if (!currentUser) return
-
-  const updatedClubs = currentUser.clubs.map(club =>
-    club.name === clubName ? { ...club, attending: true } : club
-  )
-
-  const newEvent:Event = {
-    id: `club-meeting-${clubName}`,
-    title: `${clubName} Meeting`,
-    description: `${clubName} scheduled meeting`,
-    category: 'club',
-    attendees: 1,
-    image: 'https://via.placeholder.com/400',
-    isJoined: true,
-    location: 'TBA',
-    date: currentUser.clubs.find(c => c.name === clubName)?.nextMeeting || '',
-    time: '10:00',
-    club: clubName,
+  const handleJoinEvent = (eventId:string)=>{
+    setCurrentUser(prev=>
+      prev ? {
+        ...prev,
+        events:prev.events.map(e=>
+          e.id===eventId ? {...e,isJoined: !e.isJoined} : e
+        ),
+      }:null
+    )
   }
 
-  const updatedUser = {
-    ...currentUser,
-    clubs: updatedClubs,
-    events: [...currentUser.events, newEvent],
+  const handleVoteYes = (clubName: string) => {
+    if (!currentUser) return
+
+    const updatedClubs = currentUser.clubs.map(club =>
+      club.name === clubName ? { ...club, attending: true } : club
+    )
+
+    const newEvent:Event = {
+      id: `club-meeting-${clubName}`,
+      title: `${clubName} Meeting`,
+      description: `${clubName} scheduled meeting`,
+      category: 'club',
+      attendees: 1,
+      image: 'https://via.placeholder.com/400',
+      isJoined: true,
+      location: 'TBA',
+      date: currentUser.clubs.find(c => c.name === clubName)?.nextMeeting || '',
+      time: '10:00',
+      club: clubName,
+    }
+
+    const updatedUser = {
+      ...currentUser,
+      clubs: updatedClubs,
+      events: [...currentUser.events, newEvent],
+    }
+
+    setCurrentUser(updatedUser)   // ✅ update local state
+    updateStudent(updatedUser)    // ✅ update "database"
   }
+  /*
+    const userNotifications = [
+      ...ppmkAnnouncements,
+      ...(currentUser?.clubs.map(club=>({
+        id: `notif-${club.name}`,
+        title: `${club.name} Meeting`,
+        message: `Upcoming meeting on ${club.nextMeeting}`,
+        date: club.nextMeeting,
+      })) || []),
+    ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+*/
+    const userNotifications = getUserNotifications(currentUser)
+    if (!currentUser){
+      return <Login onLogin={handleLogin}/>
+    }
 
-  setCurrentUser(updatedUser)   // ✅ update local state
-  updateStudent(updatedUser)    // ✅ update "database"
-}
-
-  return (
-  <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Header */}
-      <header className="bg-white shadow-lg border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                <Home className="w-6 h-6 text-white" />
+    return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        {/* Header */}
+        <header className="bg-white shadow-lg border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                  <Home className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-gray-900">Welcome, {currentUser.name} (Batch{currentUser?.batch}) </h1>
+                  <p className="text-sm text-gray-500">PPMK active members</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">Welcome, {currentUser.name} (Batch{currentUser?.batch}) </h1>
-                <p className="text-sm text-gray-500">PPMK active members</p>
-              </div>
-            </div>
             
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Bell className="w-6 h-6 text-gray-600 hover:text-blue-600 cursor-pointer transition-colors" />
-                {notifications > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {notifications}
-                  </span>
-                )}
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <button
+                    onClick={()=> setShowNotifications(!showNotifications)}
+                    className="relative"
+                  >
+                    <Bell className="w-6 h-6 text-gray-600 hover:text-blue-600 cursor-pointer transition-colors" />
+                    {userNotifications.length > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        {userNotifications.length}
+                      </span>
+                    )}
+                  </button>
+
+                  {showNotifications && (
+                    <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                      <div className="p-3 border-b border-gray-100 font-semibold text-gray-700">
+                        Notifications
+                      </div>
+                      <ul className="max-h-60 overflow-y-auto">
+                        {userNotifications.map(n => (
+                          <li key={n.id} className="p-3 hover:bg-gray-50">
+                            <p className="font-medium text-gray-900">{n.title}</p>
+                            <p className="text-sm text-gray-600">{n.message}</p>
+                            <p className="text-xs text-gray-400 mt-1">{n.date}</p>
+                          </li>
+                        ))}
+                      </ul>
+                      {userNotifications.length === 0 && (
+                        <div className="p-3 text-gray-500 text-sm text-center">No new notifications</div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
               </div>
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
