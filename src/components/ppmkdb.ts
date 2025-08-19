@@ -75,7 +75,7 @@ export let students: Student[] = [
         description: "Weekly practice",
         category: "club",
         attendees: 5,
-        image: "https://via.placeholder.com/400",
+        image: "https://imgur.com/a/3wbwDN7",
         isJoined: true,
         location: "Court A",
         date: "2025-08-20",
