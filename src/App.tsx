@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Calendar, Users, MessageCircle, ShoppingBag, Home, Bell } from 'lucide-react'
+import { Calendar, Users, MessageCircle, ShoppingBag, Home, Bell, X } from 'lucide-react'
 import EventCalendar from './components/EventCalendar'
 import ClubDirectory from './components/ClubDirectory'
 import CommunicationHub from './components/CommunicationHub'
@@ -9,12 +9,14 @@ import JoinedClubs from './components/JoinedClubs.tsx'
 import { Club, JoinedClub, Event, Student } from './components/types.ts'
 import Login from './components/login.tsx'
 import { getUserNotifications, students, updateStudent } from './components/ppmkdb.ts'
-import ThemeToggle from "./components/ThemeToggle";
+import ThemeToggle from "./components/ThemeToggle"
+import ChatBox from "./components/ChatBox"
 
 function App() {
   const [currentUser, setCurrentUser] = useState<Student | null>(null)
   const [activeTab, setActiveTab] = useState('calendar')
   const [showNotifications, setShowNotifications] = useState<boolean>(false)
+  const [showChat, setShowChat] = useState<boolean>(false)   // 🔹 state toggle ChatBox
 
   const tabs = [
     { id: 'calendar', label: 'Events', icon: Calendar, component: EventCalendar },
@@ -239,6 +241,28 @@ function App() {
         {activeTab === 'marketplace' && <Marketplace />}
         {activeTab === 'central' && <PPMKCentral />}
       </main>
+
+      {/* Floating ChatBox Toggle */}
+      <div className="fixed bottom-24 right-6 z-50">
+        {showChat ? (
+          <div className="relative">
+            <ChatBox />
+            <button
+              onClick={() => setShowChat(false)}
+              className="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-1 shadow-lg hover:bg-red-600"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setShowChat(true)}
+            className="bg-blue-600 text-white rounded-full p-4 shadow-lg hover:bg-blue-700 transition"
+          >
+            <MessageCircle className="w-6 h-6" />
+          </button>
+        )}
+      </div>
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg">

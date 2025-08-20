@@ -1,18 +1,19 @@
-import { Student, Club, Message} from "../components/types";
+import { Student, Club, Message } from "../components/types";
 
-export const ppmkAnnouncements = [{
-  id:"ppmk1",
-  title:"Kasuma Spring Event",
-  message:"Dont miss Kasuma Spring this weekend!",
-  date:"2023-08-15",
-},
-{
-  id:"ppmk1",
-  title:"Kasuma Spring Event",
-  message:"Dont miss Kasuma Spring this weekend!",
-  date:"2023-08-15",
-}
-]
+export const ppmkAnnouncements = [
+  {
+    id: "ppmk1",
+    title: "Kasuma Spring Event",
+    message: "Dont miss Kasuma Spring this weekend!",
+    date: "2023-08-15",
+  },
+  {
+    id: "ppmk2",
+    title: "Kasuma Spring Event",
+    message: "Dont miss Kasuma Spring this weekend!",
+    date: "2023-08-15",
+  },
+];
 
 export const ppmkClubs: Club[] = [
   {
@@ -28,7 +29,7 @@ export const ppmkClubs: Club[] = [
     president: "Amir",
     contact: "amir@example.com",
     activities: ["Weekly matches", "Training sessions", "Inter-varsity tournaments"],
-    isJoined: false, // will be overridden by student data
+    isJoined: false,
   },
   {
     id: "club2",
@@ -43,7 +44,7 @@ export const ppmkClubs: Club[] = [
     president: "Alyaa",
     contact: "alyaa@example.com",
     activities: ["Workshops", "Cultural events", "Community service"],
-    isJoined: false, // will be overridden by student data
+    isJoined: false,
   },
   {
     id: "club3",
@@ -58,7 +59,7 @@ export const ppmkClubs: Club[] = [
     president: "Husni",
     contact: "husni@example.com",
     activities: ["Game nights", "Outdoor trips", "Movie screenings"],
-    isJoined: false, // will be overridden by student data
+    isJoined: false,
   },
 ];
 
@@ -83,8 +84,8 @@ export let students: Student[] = [
       },
     ],
     chats: [],
-    message:[
-      {id:"s1", sender:"Sarah",content:"Hi bila free?", timestamp:"2025-08-15T10:00:00Z"}
+    message: [
+      { id: "s1", sender: "Sarah", content: "Hi bila free?", timestamp: "2025-08-15T10:00:00Z" },
     ],
     clubs: [{ name: "MKBA", nextMeeting: "2025-08-20", attending: false }],
   },
@@ -108,8 +109,8 @@ export let students: Student[] = [
       },
     ],
     chats: [],
-    message:[
-      {id:"s2", sender:"Teya",content:"esok petang free je", timestamp:"2025-08-15T10:00:00Z"}
+    message: [
+      { id: "s2", sender: "Teya", content: "esok petang free je", timestamp: "2025-08-15T10:00:00Z" },
     ],
     clubs: [{ name: "Recreation Club", nextMeeting: "2025-08-22", attending: false }],
   },
@@ -119,8 +120,8 @@ export let students: Student[] = [
     batch: 22,
     events: [],
     chats: [],
-    message:[
-      {id:"s3", sender:"Husni",content:"tak free do sorry", timestamp:"2025-08-15T10:00:00Z"}
+    message: [
+      { id: "s3", sender: "Husni", content: "tak free do sorry", timestamp: "2025-08-15T10:00:00Z" },
     ],
     clubs: [],
   },
@@ -130,8 +131,8 @@ export let students: Student[] = [
     batch: 22,
     events: [],
     chats: [],
-    message:[
-      {id:"s4", sender:"Irdina",content:"saya always free", timestamp:"2025-08-15T10:00:00Z"}
+    message: [
+      { id: "s4", sender: "Irdina", content: "saya always free", timestamp: "2025-08-15T10:00:00Z" },
     ],
     clubs: [],
   },
@@ -144,13 +145,62 @@ export function updateStudent(updated: Student) {
 export function getUserNotifications(currentUser: Student | null) {
   return [
     ...ppmkAnnouncements,
-    ...(currentUser?.clubs.map(club => ({
+    ...(currentUser?.clubs.map((club) => ({
       id: `notif-${club.name}`,
       title: `${club.name} Meeting`,
       message: `Upcoming meeting on ${club.nextMeeting}`,
       date: club.nextMeeting,
     })) || []),
-  ].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  )
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
+
+/* ====== CHATBOT STATIC DATA ====== */
+export const ppmkFaq: { keywords: string[]; answer: string }[] = [
+  {
+    keywords: ["announcement", "announcements", "news"],
+    answer: "You can find the latest announcements in the Announcements section.",
+  },
+  {
+    keywords: ["document", "documents", "file"],
+    answer: "Official documents are available in the Documents tab.",
+  },
+  {
+    keywords: ["poll", "polls", "survey"],
+    answer: "Active polls and surveys are listed under the Polls & Surveys section.",
+  },
+  {
+    keywords: ["hackppmk25", "hackathon", "competition"],
+    answer: "HackPPMK25 is ongoing! Submission closes on August 23, 2025.",
+  },
+  {
+    keywords: ["team mad", "recruitment", "mad"],
+    answer: "Team MAD recruitment is closed as of August 16, 2025.",
+  },
+  {
+    keywords: ["semester", "fall semester", "class"],
+    answer:
+      "Fall semester 2025 begins on September 2nd. Make sure prerequisites are met and fees are paid.",
+  },
+  {
+    keywords: ["maintenance", "library", "closed"],
+    answer:
+      "The main library will be closed July 20-22 for maintenance. Student center is the alternative space.",
+  },
+  {
+    keywords: ["scholarship", "financial aid", "bursary"],
+    answer: "Merit-based scholarships are open now. Deadline: September 1, 2025.",
+  },
+  {
+    keywords: ["health", "counseling", "mental"],
+    answer:
+      "New mental health counseling services are available. Book via the student portal or visit the health center.",
+  },
+];
+
+export const ppmkSuggestions = [
+  "When does the semester start?",
+  "Tell me about HackPPMK25",
+  "Any scholarships available?",
+  "Where to find announcements?",
+  "What about student health services?",
+];
