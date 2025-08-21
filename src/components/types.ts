@@ -1,5 +1,3 @@
-import {Message} from './CommunicationHub'
-
 // types.ts
 export interface Club {
     id: string
@@ -36,14 +34,14 @@ export interface JoinedClub {
     date: string
     time: string
   }  
-/*
+
   export interface Message {
     id: string
     sender: string
     content: string
     timestamp: string
+    avatar:string
   }
-*/
 
   export interface Student {
     name: string
@@ -52,7 +50,7 @@ export interface JoinedClub {
     events: Event[]
     chats: string[]
     clubs:JoinedClub[]
-    message:Message[]
+    messages:Record<string,Message[]>
   }
   
 

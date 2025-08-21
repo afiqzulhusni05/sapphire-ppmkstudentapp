@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
-import { updateStudent } from './ppmkdb'
+import { Message, Student } from './types'
 import { MessageCircle, Send, Users, Hash, Plus, Search, Phone, Video, MoreVertical } from 'lucide-react'
+import { updateStudent, chatRoomsMessages,addMessage} from './ppmkdb'
+
+interface CommunicationHubProps{
+  currentUser:Student
+}
 
 interface ChatRoom {
   id: string
@@ -13,15 +18,7 @@ interface ChatRoom {
   avatar: string
 }
 
-export interface Message {
-  id: string
-  sender: string
-  content: string
-  timestamp: string
-  avatar: string
-}
-
-const CommunicationHub = () => {
+const CommunicationHub:React.FC<CommunicationHubProps> = ({currentUser}) => {
   const [selectedRoom, setSelectedRoom] = useState<string>('1')
   const [newMessage, setNewMessage] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
@@ -79,14 +76,7 @@ const CommunicationHub = () => {
     }
   ]
 
-  const [roomMessages, setRoomMessages] = useState<Record<string, Message[]>>({
-    '1':[],
-    '2':[],
-    '3':[],
-    '4':[],
-    '5':[],
-  })
-
+  const [roomMessages, setRoomMessages] = useState<Record<string, Message[]>>(chatRoomsMessages)
   const messages = roomMessages[selectedRoom] || []
     
   const selectedRoomData = chatRooms.find(room => room.id === selectedRoom)
@@ -108,7 +98,7 @@ const CommunicationHub = () => {
         ...prev,
         [selectedRoom]:[...(prev[selectedRoom]||[]), newMsg]
       }))
-      console.log('Sending message:', newMessage)
+      addMessage(selectedRoom, newMsg)
       setNewMessage('')
     }
   }

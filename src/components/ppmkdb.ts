@@ -30,6 +30,14 @@ export const ppmkClubs: Club[] = [
     contact: "amir@example.com",
     activities: ["Weekly matches", "Training sessions", "Inter-varsity tournaments"],
     isJoined: false,
+    messages:[
+      {
+        id:"m1",
+        sender:"Amir",
+        content:"Welcome to MKBA!",
+        timestamp:"09:00",
+      }
+    ]
   },
   {
     id: "club2",
@@ -45,6 +53,7 @@ export const ppmkClubs: Club[] = [
     contact: "alyaa@example.com",
     activities: ["Workshops", "Cultural events", "Community service"],
     isJoined: false,
+    messages:[]
   },
   {
     id: "club3",
@@ -60,6 +69,7 @@ export const ppmkClubs: Club[] = [
     contact: "husni@example.com",
     activities: ["Game nights", "Outdoor trips", "Movie screenings"],
     isJoined: false,
+    messages:[]
   },
 ];
 
@@ -83,10 +93,11 @@ export let students: Student[] = [
         time: "17:00",
       },
     ],
-    chats: [],
-    message: [
-      { id: "s1", sender: "Sarah", content: "Hi bila free?", timestamp: "2025-08-15T10:00:00Z" },
-    ],
+    chats: {},
+    messages:{
+      "1": [
+      { id: "s1", sender: "Sarah", content: "Hi bila free?", timestamp: "2025-08-15T10:00:00Z"},
+    ]},
     clubs: [{ name: "MKBA", nextMeeting: "2025-08-20", attending: false }],
   },
   {
@@ -108,10 +119,11 @@ export let students: Student[] = [
         time: "10:00",
       },
     ],
-    chats: [],
-    message: [
-      { id: "s2", sender: "Teya", content: "esok petang free je", timestamp: "2025-08-15T10:00:00Z" },
-    ],
+    chats: {},
+    messages:{
+      "1":[
+      { id: "s2", sender: "Teya", content: "esok petang free je", timestamp: "2025-08-15T10:00:00Z"},
+    ]},
     clubs: [{ name: "Recreation Club", nextMeeting: "2025-08-22", attending: false }],
   },
   {
@@ -119,10 +131,11 @@ export let students: Student[] = [
     password: "1234",
     batch: 22,
     events: [],
-    chats: [],
-    message: [
-      { id: "s3", sender: "Husni", content: "tak free do sorry", timestamp: "2025-08-15T10:00:00Z" },
-    ],
+    chats: {},
+    messages:{
+      "1": [
+      { id: "s3", sender: "Husni", content: "tak free do sorry", timestamp: "2025-08-15T10:00:00Z"},
+    ]},
     clubs: [],
   },
   {
@@ -130,10 +143,11 @@ export let students: Student[] = [
     password: "1234",
     batch: 22,
     events: [],
-    chats: [],
-    message: [
-      { id: "s4", sender: "Irdina", content: "saya always free", timestamp: "2025-08-15T10:00:00Z" },
-    ],
+    chats: {},
+    messages:{
+      "1":[
+      { id: "s4", sender: "Irdina", content: "saya always free", timestamp: "2025-08-15T10:00:00Z"},
+    ]},
     clubs: [],
   },
 ];
@@ -204,3 +218,17 @@ export const ppmkSuggestions = [
   "Where to find announcements?",
   "What about student health services?",
 ];
+
+export let chatRoomsMessages: Record<string, Message[]> = {
+  "1": [
+    { id: "m1", sender: "Admin", content: "Welcome to Kodae Manse!", timestamp: "09:00"}
+  ],
+  "2": [],
+  "3": [],
+  "4": [],
+  "5": []
+}
+
+export function addMessage(roomId: string, message: Message) {
+  chatRoomsMessages[roomId] = [...(chatRoomsMessages[roomId] || []), message]
+}

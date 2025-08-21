@@ -237,7 +237,7 @@ function App() {
             joinedClubs={joinedClubs}
           />
         )}
-        {activeTab === 'chat' && <CommunicationHub />}
+        {activeTab === 'chat' && <CommunicationHub currentUser={currentUser} />}
         {activeTab === 'marketplace' && <Marketplace />}
         {activeTab === 'central' && <PPMKCentral />}
       </main>
