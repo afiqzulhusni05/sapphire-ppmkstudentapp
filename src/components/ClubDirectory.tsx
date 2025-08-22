@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Users, Search, Star, MapPin, Calendar, UserPlus, ExternalLink } from 'lucide-react'
 import { Club, JoinedClub } from './types'
+import {ppmkClubs} from './ppmkdb'
 
 interface Props {
   allclubs: Club[];
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const ClubDirectory: React.FC<Props> = ({ allclubs, joinedClubs }) => {
+  console.log("All Clubs received:", allclubs);
   const [filter, setFilter] = useState<"active" | "joined" | "categories" | "all">("all");
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -140,7 +142,6 @@ const ClubDirectory: React.FC<Props> = ({ allclubs, joinedClubs }) => {
                 <h3 className="text-lg font-semibold text-gray-900">{club.name}</h3>
                 <div className="flex items-center space-x-1">
                   <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                  <span className="text-sm text-gray-600">{club.rating}</span>
                 </div>
               </div>
 
@@ -212,7 +213,6 @@ const ClubDirectory: React.FC<Props> = ({ allclubs, joinedClubs }) => {
                     </span>
                     <div className="flex items-center space-x-1">
                       <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                      <span className="text-sm text-gray-600">{selectedClub.rating}</span>
                     </div>
                   </div>
                 </div>

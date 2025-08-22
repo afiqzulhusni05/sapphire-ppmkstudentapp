@@ -7,12 +7,12 @@ export interface Club {
     members: number
     image: string
     isJoined: boolean
-    rating: number
     location: string
     meetingTime: string
     activities: string[]
     president: string
     contact: string
+    messages?:Message[]
   }
   
 export interface JoinedClub {
@@ -40,18 +40,27 @@ export interface JoinedClub {
     sender: string
     content: string
     timestamp: string
-    avatar:string
+  }
+
+  export interface ChatRoom{
+    id:string
+    name:string
+    type:"batch"|"university"|"club"
+    members:number
+    lastMessage:string
+    lastMessageTime:string
+    unreadCount:number
   }
 
   export interface Student {
     name: string
     password: string
     batch: number
+    clubs: string[]
     events: Event[]
-    chats: string[]
-    clubs:JoinedClub[]
-    messages:Record<string,Message[]>
+    chats: {[roomId: string]: Message[]}
   }
+  
   
 
   

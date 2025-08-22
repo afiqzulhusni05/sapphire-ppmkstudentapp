@@ -8,7 +8,7 @@ import PPMKCentral from './components/PPMKCentral'
 import JoinedClubs from './components/JoinedClubs.tsx'
 import { Club, JoinedClub, Event, Student } from './components/types.ts'
 import Login from './components/login.tsx'
-import { getUserNotifications, students, updateStudent } from './components/ppmkdb.ts'
+import { getUserNotifications, students, updateStudent,ppmkClubs } from './components/ppmkdb.ts'
 import ThemeToggle from "./components/ThemeToggle"
 import ChatBox from "./components/ChatBox"
 
@@ -34,60 +34,8 @@ function App() {
     { name: 'Kasuma Spring', nextMeeting: '2023-08-22', attending: false },
   ])
 
-  const [events, setEvents] = useState<Event[]>([
-    {
-      id: '1',
-      title: 'MKBA',
-      club: 'MKBA',
-      description: 'MKBA is a student-led organization focused on badminton.',
-      category: 'club',
-      attendees: 120,
-      image: 'https://raw.githubusercontent.com/afiqzulhusni05/sapphire-ppmkstudentapp/refs/heads/main/public/images/mkba.jpeg',
-      isJoined: joinedClubs.some(jc => jc.name === 'MKBA'),
-      location: 'Business Block, Room 101',
-      date: '2025-08-20',
-      time: '17:00',
-    },
-    {
-      id: '2',
-      title: 'Kasuma Spring',
-      club: 'PPMK',
-      description: 'A fun and inclusive club for sports, games, and outdoor activities.',
-      category: 'ppmk',
-      attendees: 80,
-      image: 'https://via.placeholder.com/400',
-      isJoined: joinedClubs.some(jc => jc.name === 'Kasuma Spring'),
-      location: 'Sports Complex',
-      date: '2025-08-22',
-      time: '10:00',
-    },
-    {
-      id: '3',
-      title: 'MSRC',
-      club: 'MSRC',
-      description: 'MSRC is a student-led club focused on recreational activities.',
-      category: 'club',
-      attendees: 20,
-      image: 'https://raw.githubusercontent.com/afiqzulhusni05/sapphire-ppmkstudentapp/refs/heads/main/public/images/msrc.jpeg',
-      isJoined: joinedClubs.some(jc => jc.name === 'MSRC'),
-      location: 'Recreation Center',
-      date: '2025-09-15',
-      time: '15:00',
-    },
-    {
-      id: '4',
-      title: 'MSDC',
-      club: 'MSDC',
-      description: 'MSDC is a club for dancing enthusiasts, promoting both modern and traditional Malaysian dance styles.',
-      category: 'club',
-      attendees: 50,
-      image: 'https://raw.githubusercontent.com/afiqzulhusni05/sapphire-ppmkstudentapp/refs/heads/main/public/images/msdc.jpeg',
-      isJoined: joinedClubs.some(jc => jc.name === 'MSDC'),
-      location: 'Cultural Hall',
-      date: '2025-10-05',
-      time: '18:00',
-    }
-  ])
+  const [events, setEvents] = useState<Event[]>([])
+  
 
   const handleLogin = (name: string, password: string) => {
     const found = students.find(
@@ -118,27 +66,24 @@ function App() {
   const handleVoteYes = (clubName: string) => {
     if (!currentUser) return
 
-    const updatedClubs = currentUser.clubs.map(club =>
-      club.name === clubName ? { ...club, attending: true } : club
-    )
-
+    const clubInfo=ppmkClubs.find(c=>c.name===clubName)
     const newEvent: Event = {
       id: `club-meeting-${clubName}`,
       title: `${clubName} Meeting`,
       description: `${clubName} scheduled meeting`,
       category: 'club',
       attendees: 1,
-      image: 'https://via.placeholder.com/400',
+      image: clubInfo?.image,
       isJoined: true,
-      location: 'TBA',
-      date: currentUser.clubs.find(c => c.name === clubName)?.nextMeeting || '',
-      time: '10:00',
+      location: clubInfo?.location,
+      date: clubInfo?.meetingTime.split(" ")[0],
+      time: clubInfo?.meetingTime.split(" ")[1],
       club: clubName,
     }
+    setEvents(prev=>[...prev, newEvent])
 
     const updatedUser = {
       ...currentUser,
-      clubs: updatedClubs,
       events: [...currentUser.events, newEvent],
     }
 
@@ -253,21 +198,7 @@ function App() {
         )}
         {activeTab === 'clubs' && (
           <ClubDirectory
-            allclubs={events.map(event => ({
-              id: event.id,
-              name: event.title,
-              description: event.description,
-              category: event.category,
-              members: event.attendees,
-              image: event.image,
-              location: event.location,
-              meetingTime: `${event.date} ${event.time}`,
-              isJoined: joinedClubs.some(jc => jc.name === event.club),
-              rating: 0,
-              president: 'TBA',
-              contact: 'TBA',
-              activities: ['Activity 1', 'Activity 2'],
-            }))}
+            allclubs={ppmkClubs}
             joinedClubs={joinedClubs}
           />
         )}
@@ -309,7 +240,7 @@ function App() {
               {currentUser.clubs.length > 0 ? (
                 <ul className="list-disc list-inside">
                   {currentUser.clubs.map((club, idx) => (
-                    <li key={idx}>{club.name} (Next: {club.nextMeeting})</li>
+                    <li key={idx}>{club}</li>
                   ))}
                 </ul>
               ) : (

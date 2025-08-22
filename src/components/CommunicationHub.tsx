@@ -20,20 +20,15 @@ const CommunicationHub:React.FC<CommunicationHubProps> = ({currentUser}) => {
   },[selectedRoom,chatRoomsMessages])
 
   const filteredRooms = chatRooms.filter(room =>{
-    if (room.type==="club"){
-      return currentUser.clubs.some(club=>club.name===room.name)
-    }
-    if (room.type === "batch"){
-      return currentUser.batch === 22 && room.name === `Batch ${currentUser.batch}`
-    }
-    if (room.type === "university"){
-      return true
-    }
+    if(room.type==="university")return true
+    if(room.type==="batch"&&room.name.includes(currentUser.batch.toString()))return true
+    if(room.type==="club"&&currentUser.clubs.includes(room.name)) return true
     return false
   })
+  console.log("Current User Clubs:",currentUser.clubs)
+  console.log("Visible Rooms:", filteredRooms.map(r=>r.name))
 
   const selectedRoomData = chatRooms.find(room => room.id === selectedRoom)
-
 
   const handleSendMessage = () => {
     if (newMessage.trim() && selectedRoom){

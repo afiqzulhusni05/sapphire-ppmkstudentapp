@@ -1,14 +1,6 @@
 import React from 'react'
 import {JoinedClub} from './types'
 
-/*
-interface Club {
-  name: string
-  nextMeeting: string
-  attending: boolean
-}
-*/
-
 interface Props {
   clubs: JoinedClub[]
   onVote: (clubName: string) => void

@@ -12,88 +12,10 @@ const EventCalendar:React.FC<EventCalendarProps> = ({events,onJoinEvent}) => {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [filter, setFilter] = useState<'all' | 'club' | 'ppmk' | 'academic'>('all')
   const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar')
-/*
-  const events: Event[] = [
-    {
-      id: '1',
-      title: 'Tech Innovation Workshop',
-      date: '2024-01-15',
-      time: '14:00',
-      location: 'Engineering Hall A',
-      club: 'Computer Science Club',
-      description: 'Learn about the latest trends in AI and machine learning. Hands-on workshop with industry experts.',
-      attendees: 45,
-      maxAttendees: 60,
-      image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400',
-      category: 'club',
-      isJoined: false
-    },
-    {
-      id: '2',
-      title: 'PPMK Annual Sports Day',
-      date: '2024-01-18',
-      time: '08:00',
-      location: 'University Stadium',
-      club: 'PPMK Sports Committee',
-      description: 'Join us for a day of sports, fun, and competition. Multiple events and prizes to be won!',
-      attendees: 234,
-      maxAttendees: 500,
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
-      category: 'ppmk',
-      isJoined: true
-    },
-    {
-      id: '3',
-      title: 'Cultural Night Performance',
-      date: '2024-01-20',
-      time: '19:00',
-      location: 'Main Auditorium',
-      club: 'Cultural Society',
-      description: 'Experience diverse cultures through music, dance, and traditional performances.',
-      attendees: 156,
-      maxAttendees: 300,
-      image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400',
-      category: 'club',
-      isJoined: false
-    },
-    {
-      id: '4',
-      title: 'Academic Excellence Seminar',
-      date: '2024-01-22',
-      time: '10:00',
-      location: 'Lecture Hall B',
-      club: 'Academic Affairs',
-      description: 'Tips and strategies for academic success. Guest speakers from various departments.',
-      attendees: 89,
-      maxAttendees: 150,
-      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400',
-      category: 'academic',
-      isJoined: true
-    },
-    {
-      id: '5',
-      title: 'Entrepreneurship Bootcamp',
-      date: '2024-01-25',
-      time: '09:00',
-      location: 'Business Center',
-      club: 'Entrepreneurship Club',
-      description: 'Three-day intensive bootcamp on starting your own business. Mentorship and networking opportunities.',
-      attendees: 67,
-      maxAttendees: 80,
-      image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400',
-      category: 'club',
-      isJoined: false
-    }
-  ]
-  */
+
 
   const filteredEvents = events.filter(event => filter === 'all' || event.category === filter)
-/*
-  const handleJoinEvent = (eventId: string) => {
-    // In a real app, this would make an API call
-    console.log(`Joining event ${eventId}`)
-  }
-*/
+
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
   }
