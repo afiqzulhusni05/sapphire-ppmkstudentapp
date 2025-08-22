@@ -17,6 +17,9 @@ function App() {
   const [activeTab, setActiveTab] = useState('calendar')
   const [showNotifications, setShowNotifications] = useState<boolean>(false)
   const [showChat, setShowChat] = useState<boolean>(false)   // 🔹 state toggle ChatBox
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showProfileMenu, setShowProfileMenu]=useState(false);
+  const [showProfileModal,setShowProfileModal]=useState(false);
 
   const tabs = [
     { id: 'calendar', label: 'Events', icon: Calendar, component: EventCalendar },
@@ -97,6 +100,10 @@ function App() {
     }
   }
 
+  const handleLogout = () => {
+    setCurrentUser(null);
+  }
+
   const handleJoinEvent = (eventId: string) => {
     setCurrentUser(prev =>
       prev ? {
@@ -154,7 +161,7 @@ function App() {
             {/* Logo & Welcome */}
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                <Home className="w-6 h-6 text-white" />
+                <Home className="w-6 h-6 text-white"/>
               </div>
               <div>
                 <h1 className="text-xl font-bold">Welcome, {currentUser.name} (Batch {currentUser?.batch})</h1>
@@ -203,7 +210,34 @@ function App() {
               <ThemeToggle />
 
               {/* Profile Placeholder */}
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+              <div className="relative">
+                <button
+                  onClick={()=> setShowProfileMenu(!showProfileMenu)}
+                  className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                  />
+                  {showProfileMenu &&(
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50">
+                      <button
+                        onClick={()=>{
+                          setShowProfileModal(true)
+                          setShowProfileMenu(false)
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        View Profile
+                      </button>
+                      <button
+                        onClick={()=>{
+                          handleLogout()
+                          setShowProfileMenu(false)
+                        }}
+                        className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-700"
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    )}
+              </div>
             </div>
           </div>
         </div>
@@ -263,6 +297,38 @@ function App() {
           </button>
         )}
       </div>
+      {showProfileModal && currentUser && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg w-96 p-6">
+            <h2 className="text-xl font-bold mb-4">👤 My Profile</h2>
+            <p><span className="font-semibold">Name:</span> {currentUser.name}</p>
+            <p><span className="font-semibold">Batch:</span> {currentUser.batch}</p>
+      
+            <div className="mt-3">
+              <h3 className="font-semibold">Joined Clubs:</h3>
+              {currentUser.clubs.length > 0 ? (
+                <ul className="list-disc list-inside">
+                  {currentUser.clubs.map((club, idx) => (
+                    <li key={idx}>{club.name} (Next: {club.nextMeeting})</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-500">Not in any clubs</p>
+              )}
+            </div>
+      
+            <div className="flex justify-end mt-6">
+              <button
+                onClick={() => setShowProfileModal(false)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg">

@@ -17,7 +17,7 @@ export const ppmkAnnouncements = [
 
 export const ppmkClubs: Club[] = [
   {
-    id: "club1",
+    id: "3",
     name: "MKBA",
     description: "A student-led organization focused on badminton and teamwork.",
     category: "Sports",
@@ -30,17 +30,10 @@ export const ppmkClubs: Club[] = [
     contact: "amir@example.com",
     activities: ["Weekly matches", "Training sessions", "Inter-varsity tournaments"],
     isJoined: false,
-    messages:[
-      {
-        id:"m1",
-        sender:"Amir",
-        content:"Welcome to MKBA!",
-        timestamp:"09:00",
-      }
-    ]
+    messages:[],
   },
   {
-    id: "club2",
+    id: "2",
     name: "PPMK",
     description: "A student-led organization focused on cultural and academic activities.",
     category: "Cultural",
@@ -56,7 +49,7 @@ export const ppmkClubs: Club[] = [
     messages:[]
   },
   {
-    id: "club3",
+    id: "5",
     name: "Recreation Club",
     description: "A club for recreational activities and socializing.",
     category: "Recreation",
@@ -94,10 +87,6 @@ export let students: Student[] = [
       },
     ],
     chats: {},
-    messages:{
-      "1": [
-      { id: "s1", sender: "Sarah", content: "Hi bila free?", timestamp: "2025-08-15T10:00:00Z"},
-    ]},
     clubs: [{ name: "MKBA", nextMeeting: "2025-08-20", attending: false }],
   },
   {
@@ -120,10 +109,6 @@ export let students: Student[] = [
       },
     ],
     chats: {},
-    messages:{
-      "1":[
-      { id: "s2", sender: "Teya", content: "esok petang free je", timestamp: "2025-08-15T10:00:00Z"},
-    ]},
     clubs: [{ name: "Recreation Club", nextMeeting: "2025-08-22", attending: false }],
   },
   {
@@ -132,10 +117,6 @@ export let students: Student[] = [
     batch: 22,
     events: [],
     chats: {},
-    messages:{
-      "1": [
-      { id: "s3", sender: "Husni", content: "tak free do sorry", timestamp: "2025-08-15T10:00:00Z"},
-    ]},
     clubs: [],
   },
   {
@@ -144,10 +125,6 @@ export let students: Student[] = [
     batch: 22,
     events: [],
     chats: {},
-    messages:{
-      "1":[
-      { id: "s4", sender: "Irdina", content: "saya always free", timestamp: "2025-08-15T10:00:00Z"},
-    ]},
     clubs: [],
   },
 ];
@@ -218,6 +195,64 @@ export const ppmkSuggestions = [
   "Where to find announcements?",
   "What about student health services?",
 ];
+
+export interface ChatRoom{
+  id:string
+  name:string
+  type:"batch"|"university"|"club"
+  members:number
+  lastMessage:string
+  lastMessageTime:string
+  unreadCount:number
+}
+
+export const chatRooms: ChatRoom[] = [
+  {
+    id: '1',
+    name: 'Kodae Manse',
+    type: 'university',
+    members: 238,
+    lastMessage: 'AUTUMN 2025 TUITION FEE PAYMENT',
+    lastMessageTime: '2 min ago',
+    unreadCount: 3,
+  },
+  {
+    id: '2',
+    name: 'PPMK Announcements',
+    type: 'university',
+    members: 1250,
+    lastMessage: 'New semester registration opens tomorrow',
+    lastMessageTime: '1 hour ago',
+    unreadCount: 1,
+  },
+  {
+    id: '3',
+    name: 'MKBA',
+    type: 'club',
+    members: 78,
+    lastMessage: 'Great shots from yesterday\'s event!',
+    lastMessageTime: '3 hours ago',
+    unreadCount: 0,
+  },
+  {
+    id: '4',
+    name: 'Batch 22',
+    type: 'batch',
+    members: 140,
+    lastMessage: 'Study group meeting at 3 PM',
+    lastMessageTime: '5 hours ago',
+    unreadCount: 2,
+  },
+  {
+    id: '5',
+    name: 'MSDC',
+    type: 'club',
+    members: 203,
+    lastMessage: 'Rehearsal schedule updated',
+    lastMessageTime: '1 day ago',
+    unreadCount: 0,
+  }
+]
 
 export let chatRoomsMessages: Record<string, Message[]> = {
   "1": [

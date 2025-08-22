@@ -24,7 +24,7 @@ const CommunicationHub:React.FC<CommunicationHubProps> = ({currentUser}) => {
       return currentUser.clubs.some(club=>club.name===room.name)
     }
     if (room.type === "batch"){
-      return currentUser.batch === 22 && room.name.includes("Batch 22")
+      return currentUser.batch === 22 && room.name === `Batch ${currentUser.batch}`
     }
     if (room.type === "university"){
       return true
@@ -48,27 +48,6 @@ const CommunicationHub:React.FC<CommunicationHubProps> = ({currentUser}) => {
       setNewMessage('')
     }
   }
-
-  /*
-  const getRoomTypeColor = (type: string) => {
-    switch (type) {
-      case 'batch': return 'bg-blue-100 text-blue-800'
-      case 'university': return 'bg-purple-100 text-purple-800'
-      case 'club': return 'bg-green-100 text-green-800'
-      default: return 'bg-gray-100 text-gray-800'
-    }
-  }
-  
-
-  const getRoomTypeIcon = (type: string) => {
-    switch (type) {
-      case 'batch': return <Users className="w-4 h-4" />
-      case 'university': return <Hash className="w-4 h-4" />
-      case 'club': return <MessageCircle className="w-4 h-4" />
-      default: return <MessageCircle className="w-4 h-4" />
-    }
-  }
-  */
 
   return (
     <div className="space-y-6">
@@ -109,7 +88,7 @@ const CommunicationHub:React.FC<CommunicationHubProps> = ({currentUser}) => {
               </div>
 
               {/* Messages */}
-              <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-100">
+              <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-white-100">
                 {messages.map((message) => (
                   <div key={message.id} className={`flex ${
                     message.sender === currentUser.name ? "justify-end" : "justify-start"
