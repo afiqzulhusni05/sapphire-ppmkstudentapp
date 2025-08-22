@@ -158,7 +158,7 @@ function App() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">Welcome, {currentUser.name} (Batch {currentUser?.batch})</h1>
-                <p className="text-sm text-gray-500 dark:text-gray-400">PPMK active members</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">PPMK active member</p>
               </div>
             </div>
 
